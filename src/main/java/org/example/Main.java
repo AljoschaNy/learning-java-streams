@@ -1,11 +1,17 @@
 package org.example;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         List<Integer> numbers = List.of(3,34,12,35,2,4,6,5);
         System.out.println("Initial: " + numbers.toString());
 
@@ -18,7 +24,7 @@ public class Main {
         System.out.println("Double: " + doubledNumbers.toString());
 
         // Schritt 3: Sortiert die Liste in aufsteigender Reihenfolge.
-        List<Integer> sortedNumbers = numbers.stream().sorted(Comparator.reverseOrder()).toList();
+        List<Integer> sortedNumbers = numbers.stream().sorted().toList();
         System.out.println("Sorted: " + sortedNumbers.toString());
 
         // Schritt 4: Führt eine 'reduce'-Operation durch, um die Summe aller Zahlen in der Liste zu berechnen.
@@ -33,10 +39,21 @@ public class Main {
         List<Integer> array2 = numbers.stream()
                 .filter(n -> n%2 == 0)
                 .map(n -> n*2)
-                .sorted(Comparator.reverseOrder())
-                .toList();
+                .sorted()
+                .collect(Collectors.toList());
 
+        System.out.println("Array before: " + numbers.toString());
         System.out.println("Edited array: " + array2.toString());
+        System.out.println("\n");
 
+        ArrayList<Student> students = new ArrayList<>();
+
+        System.out.println("Bonus");
+        try (Stream<String> lines = Files.lines(Paths.get("students.csv"))) {
+            lines.skip(1)
+                    .forEach(System.out::println);
+        } catch (IOException e) {
+            System.out.println("Can't find the file");
+        }
     }
 }

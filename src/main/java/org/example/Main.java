@@ -40,7 +40,7 @@ public class Main {
                 .filter(n -> n%2 == 0)
                 .map(n -> n*2)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
 
         System.out.println("Array before: " + numbers.toString());
         System.out.println("Edited array: " + array2.toString());
@@ -50,8 +50,12 @@ public class Main {
 
         System.out.println("Bonus");
         try (Stream<String> lines = Files.lines(Paths.get("students.csv"))) {
-            lines.skip(1)
-                    .forEach(System.out::println);
+            List<String> studentsFromStream = lines.skip(1)
+                    .filter(line -> !line.equals("")).toList();
+
+            for(int i = 0; i < studentsFromStream.size(); i++) {
+                System.out.println("Index " + i + ": " + studentsFromStream.get(i));
+            }
         } catch (IOException e) {
             System.out.println("Can't find the file");
         }

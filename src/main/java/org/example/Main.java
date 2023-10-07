@@ -46,21 +46,29 @@ public class Main {
         System.out.println("Edited array: " + array2.toString());
         System.out.println("\n");
 
-        ArrayList<String> students = new ArrayList<>();
+        ArrayList<String> studentsStringList = new ArrayList<>();
+        ArrayList<Student> students = new ArrayList<>();
 
         System.out.println("Bonus");
         try (Stream<String> lines = Files.lines(Paths.get("students.csv"))) {
             lines.skip(1)
                 .filter(line -> !line.isEmpty())
                 .forEach(line -> {
-                    if(!students.contains(line)) {
-                        students.add(line);
+                    if(!studentsStringList.contains(line)) {
+                        studentsStringList.add(line);
                     }
             });
 
-            for(int i = 0; i < students.size(); i++) {
-                System.out.println("Index " + i + ": " + students.get(i));
+            for(int i = 0; i < studentsStringList.size(); i++) {
+                String[] studentSubStrings = studentsStringList.get(i).split(",");
+                students.add(new Student(
+                        studentSubStrings[0],
+                        studentSubStrings[1],
+                        studentSubStrings[2],
+                        Integer.parseInt(studentSubStrings[3])
+                ));
             }
+            System.out.println(students);
         } catch (IOException e) {
             System.out.println("Can't find the file");
         }

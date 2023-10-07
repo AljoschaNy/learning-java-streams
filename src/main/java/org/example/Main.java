@@ -33,7 +33,7 @@ public class Main {
 
         // Schritt 5: Nutzt 'forEach' und gebt jede verarbeitete Zahl aus.
         System.out.println("\nForeach:");
-        numbers.stream().forEach(n -> System.out.println(n));
+        numbers.stream().forEach(System.out::println);
 
         // Schritt 6: Sammelt die verarbeiteten Zahlen in einer neuen Liste mit 'collect'.
         List<Integer> array2 = numbers.stream()
@@ -46,15 +46,20 @@ public class Main {
         System.out.println("Edited array: " + array2.toString());
         System.out.println("\n");
 
-        ArrayList<Student> students = new ArrayList<>();
+        ArrayList<String> students = new ArrayList<>();
 
         System.out.println("Bonus");
         try (Stream<String> lines = Files.lines(Paths.get("students.csv"))) {
-            List<String> studentsFromStream = lines.skip(1)
-                    .filter(line -> !line.equals("")).toList();
+            lines.skip(1)
+                .filter(line -> !line.isEmpty())
+                .forEach(line -> {
+                    if(!students.contains(line)) {
+                        students.add(line);
+                    }
+            });
 
-            for(int i = 0; i < studentsFromStream.size(); i++) {
-                System.out.println("Index " + i + ": " + studentsFromStream.get(i));
+            for(int i = 0; i < students.size(); i++) {
+                System.out.println("Index " + i + ": " + students.get(i));
             }
         } catch (IOException e) {
             System.out.println("Can't find the file");
